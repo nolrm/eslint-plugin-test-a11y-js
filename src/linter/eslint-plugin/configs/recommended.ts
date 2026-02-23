@@ -38,7 +38,13 @@ const recommended: RuleConfig = {
   // New rules - Moderate violations (warn)
   'test-a11y-js/click-events-have-key-events': 'warn',
   'test-a11y-js/no-static-element-interactions': 'warn',
-  'test-a11y-js/interactive-supports-focus': 'warn'
+  'test-a11y-js/interactive-supports-focus': 'warn',
+
+  // Phase 6: New rules
+  'test-a11y-js/anchor-is-valid': 'error',
+  'test-a11y-js/no-interactive-element-to-noninteractive-role': 'error',
+  'test-a11y-js/no-noninteractive-element-to-interactive-role': 'warn',
+  'test-a11y-js/no-redundant-roles': 'warn'
 
   // Not included in recommended (available in strict):
   // - aria-validation, semantic-html, form-validation

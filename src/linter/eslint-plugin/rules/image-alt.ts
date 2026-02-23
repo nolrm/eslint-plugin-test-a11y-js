@@ -63,17 +63,25 @@ const rule: Rule.RuleModule = {
         if (!jsxNode.name || jsxNode.name.type !== 'JSXIdentifier') {
           return
         }
-        
-        // Check if it's an img element (native or mapped component)
-        if (jsxNode.name.name === 'img' || isElementLike(node, context, 'img')) {
-          // Check if image is decorative (and options allow it)
-          const isDecorative = isImageDecorative(
+
+        const tagName = jsxNode.name.name
+
+        // Detect element types that require alt attributes
+        const isImg = tagName === 'img' || isElementLike(node, context, 'img')
+        const isArea = tagName === 'area'
+        const typeAttr = getJSXAttribute(jsxNode, 'type')
+        const isInputImage = tagName === 'input' &&
+          typeAttr?.value?.type === 'Literal' && typeAttr.value.value === 'image'
+
+        if (isImg || isArea || isInputImage) {
+          // Check if image is decorative (only applies to img, not area/input)
+          const isDecorative = isImg && isImageDecorative(
             jsxNode,
             options,
             hasJSXAttribute,
             getJSXAttribute
           )
-          
+
           // Check if alt attribute exists
           if (!hasJSXAttribute(jsxNode, 'alt')) {
             if (!isDecorative) {
@@ -104,6 +112,10 @@ const rule: Rule.RuleModule = {
 
           // Check if alt is empty string
           if (altAttr && altAttr.value && altAttr.value.type === 'Literal' && altAttr.value.value === '') {
+            // For area without href, empty alt is acceptable (inactive image map area)
+            if (isArea && !hasJSXAttribute(jsxNode, 'href')) {
+              return
+            }
             const runtimeComment = hasRuntimeCheckedComment(context, node)
             if (!(runtimeComment.hasComment && runtimeComment.mode === 'suppress')) {
               if (!isDecorative) {
@@ -127,16 +139,23 @@ const rule: Rule.RuleModule = {
       // Check Vue template elements
       VElement(node: Rule.Node) {
         const vueNode = node as any
-        if (vueNode.name === 'img') {
-          // For Vue, check decorative status (simplified - no component mapping for v1)
+
+        const isVueImg = vueNode.name === 'img'
+        const isVueArea = vueNode.name === 'area'
+        const vueTypeAttr = getVueAttribute(vueNode, 'type')
+        const isVueInputImage = vueNode.name === 'input' &&
+          vueTypeAttr?.value?.value === 'image'
+
+        if (isVueImg || isVueArea || isVueInputImage) {
+          // For Vue, check decorative status (only for img elements)
           const hasAriaHidden = hasVueAttribute(vueNode, 'aria-hidden')
           const roleAttr = getVueAttribute(vueNode, 'role')
           const hasRolePresentation = roleAttr?.value?.value === 'presentation'
-          const isDecorative = options.allowMissingAltOnDecorative && 
-            (hasAriaHidden || hasRolePresentation || 
-             (options.decorativeMatcher?.markerAttributes?.some(attr => 
+          const isDecorative = isVueImg && options.allowMissingAltOnDecorative &&
+            (hasAriaHidden || hasRolePresentation ||
+             (options.decorativeMatcher?.markerAttributes?.some(attr =>
                hasVueAttribute(vueNode, attr)) ?? false))
-          
+
           // Check if alt attribute exists
           if (!hasVueAttribute(vueNode, 'alt')) {
             if (!isDecorative) {
@@ -166,6 +185,10 @@ const rule: Rule.RuleModule = {
 
           // Check if alt is empty string
           if (altAttr && altAttr.value && altAttr.value.value === '') {
+            // For area without href, empty alt is acceptable (inactive image map area)
+            if (isVueArea && !hasVueAttribute(vueNode, 'href')) {
+              return
+            }
             const runtimeComment = hasRuntimeCheckedComment(context, node)
             if (!(runtimeComment.hasComment && runtimeComment.mode === 'suppress')) {
               if (!isDecorative) {

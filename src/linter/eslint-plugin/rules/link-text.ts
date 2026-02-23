@@ -26,7 +26,7 @@ function getJSXAccessibleName(node: any, _context: Rule.RuleContext): { text: st
     return { text: '', source: 'aria-labelledby' }
   }
   
-  // Check text content
+  // Check text content and image children
   const parent = node.parent
   const jsxElement = parent
   if (jsxElement?.children) {
@@ -38,8 +38,22 @@ function getJSXAccessibleName(node: any, _context: Rule.RuleContext): { text: st
     if (textContent) {
       return { text: textContent, source: 'text' }
     }
+
+    // Also check img children with non-empty alt as accessible name source
+    // e.g. <a><img alt="Home" /></a> is valid
+    for (const child of jsxElement.children) {
+      if (child.type === 'JSXElement') {
+        const childOpening = child.openingElement
+        if (childOpening?.name?.name === 'img') {
+          const altAttr = childOpening.attributes?.find((attr: any) => attr.name?.name === 'alt')
+          if (altAttr?.value?.type === 'Literal' && typeof altAttr.value.value === 'string' && altAttr.value.value !== '') {
+            return { text: altAttr.value.value, source: 'text' }
+          }
+        }
+      }
+    }
   }
-  
+
   return { text: '', source: null }
 }
 
@@ -192,7 +206,7 @@ const rule: Rule.RuleModule = {
             source = 'aria-labelledby'
           }
           
-          // Check text content
+          // Check text content and image children
           if (!source && vueNode.children) {
             const textContent = vueNode.children
               .filter((child: any) => child.type === 'VText')
@@ -202,6 +216,23 @@ const rule: Rule.RuleModule = {
             if (textContent) {
               accessibleText = textContent
               source = 'text'
+            }
+
+            // Also check img children with non-empty alt as accessible name source
+            // e.g. <a><img alt="Home" /></a> is valid
+            if (!source) {
+              for (const child of vueNode.children) {
+                if (child.type === 'VElement' && child.name === 'img') {
+                  const altAttr = child.startTag?.attributes?.find((attr: any) =>
+                    !attr.directive && attr.key?.name === 'alt'
+                  )
+                  if (altAttr?.value?.value && altAttr.value.value !== '') {
+                    accessibleText = altAttr.value.value
+                    source = 'text'
+                    break
+                  }
+                }
+              }
             }
           }
 

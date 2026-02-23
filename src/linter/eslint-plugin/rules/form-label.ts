@@ -24,62 +24,31 @@ const rule: Rule.RuleModule = {
     schema: []
   },
   create(context: Rule.RuleContext) {
-    // Track form controls and their labels in the current file
-    const formControls = new Map<string, any>()
-    const labels = new Map<string, any>()
-
     return {
       // Check JSX form control elements
       JSXOpeningElement(node: Rule.Node) {
         const jsxNode = node as any
-        
+
         // Only handle simple identifiers (not member expressions like <Form.Input>)
         if (!jsxNode.name || jsxNode.name.type !== 'JSXIdentifier') {
           return
         }
-        
+
         const tagName = jsxNode.name.name?.toLowerCase()
-        
+
         if (tagName === 'input' || tagName === 'select' || tagName === 'textarea') {
           // Check if it has aria-label or aria-labelledby
           const hasAriaLabel = hasJSXAttribute(jsxNode, 'aria-label')
           const hasAriaLabelledBy = hasJSXAttribute(jsxNode, 'aria-labelledby')
-          
-          // Get id attribute
-          const idAttr = jsxNode.attributes?.find((attr: any) => 
+
+          // Get id attribute — if present, a label may be in another component
+          const idAttr = jsxNode.attributes?.find((attr: any) =>
             attr.name?.name === 'id'
           )
           const id = idAttr?.value?.value
 
-          // If no aria-label, aria-labelledby, or id, report
+          // Report only when there is no labeling mechanism at all
           if (!hasAriaLabel && !hasAriaLabelledBy && !id) {
-            context.report({
-              node,
-              messageId: 'missingLabel'
-            })
-          } else if (id) {
-            // Store for later checking against label[for]
-            formControls.set(id, node)
-          }
-        }
-
-        // Check for label elements
-        if (tagName === 'label') {
-          const forAttr = jsxNode.attributes?.find((attr: any) => 
-            attr.name?.name === 'for' || attr.name?.name === 'htmlFor'
-          )
-          const forValue = forAttr?.value?.value
-          if (forValue) {
-            labels.set(forValue, node)
-          }
-        }
-      },
-
-      // After checking all nodes, verify label associations
-      'Program:exit'() {
-        // Check if form controls have matching labels
-        for (const [id, node] of formControls.entries()) {
-          if (!labels.has(id)) {
             context.report({
               node,
               messageId: 'missingLabel'
@@ -92,34 +61,22 @@ const rule: Rule.RuleModule = {
       VElement(node: Rule.Node) {
         const vueNode = node as any
         const tagName = vueNode.name?.toLowerCase()
-        
+
         if (tagName === 'input' || tagName === 'select' || tagName === 'textarea') {
           // Check if it has aria-label or aria-labelledby
           const hasAriaLabel = hasVueAttribute(vueNode, 'aria-label')
           const hasAriaLabelledBy = hasVueAttribute(vueNode, 'aria-labelledby')
-          
-          // Get id attribute
+
+          // Get id attribute — if present, a label may be in another component
           const idAttr = getVueAttribute(vueNode, 'id')
           const id = idAttr?.value?.value
 
-          // If no aria-label, aria-labelledby, or id, report
+          // Report only when there is no labeling mechanism at all
           if (!hasAriaLabel && !hasAriaLabelledBy && !id) {
             context.report({
               node,
               messageId: 'missingLabel'
             })
-          } else if (id) {
-            // Store for later checking against label[for]
-            formControls.set(id, node)
-          }
-        }
-
-        // Check for label elements
-        if (tagName === 'label') {
-          const forAttr = getVueAttribute(vueNode, 'for')
-          const forValue = forAttr?.value?.value
-          if (forValue) {
-            labels.set(forValue, node)
           }
         }
       }

@@ -7,21 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-02-23
+
+### Added
+- 4 new accessibility rules (total: 40 rules)
+  - `anchor-is-valid` — anchors must have a real href; flags empty `""`, `"#"`, and `javascript:` hrefs, and onClick-without-href (prefer `<button>`)
+  - `no-interactive-element-to-noninteractive-role` — prevents `role="none"` or `role="presentation"` on interactive elements (`button`, `a[href]`, `input`, `select`, `textarea`, `summary`)
+  - `no-noninteractive-element-to-interactive-role` — prevents interactive ARIA roles (button, link, checkbox, etc.) on non-interactive elements without both `tabIndex` and a keyboard event handler
+  - `no-redundant-roles` — flags explicit `role` attributes that match the element's implicit ARIA role (e.g. `<button role="button">`, `<nav role="navigation">`) with auto-fix suggestion
+
 ### Fixed
+- `image-alt` now also checks `<input type="image">` and `<area>` elements, not just `<img>`; empty alt on `<area>` without `href` is correctly allowed
+- `link-text` no longer false-positives on `<a><img alt="Home" /></a>` — an img child with a non-empty alt provides an accessible name for the link
+- `form-label` no longer false-positives when a form control has an `id` but its `<label for>` is in a different component file; presence of `id` is now treated as sufficient (label association may be elsewhere)
+
+### Changed
+- `recommended` config grows from 24 → 28 rules (new: `anchor-is-valid` as error, `no-interactive-element-to-noninteractive-role` as error, `no-noninteractive-element-to-interactive-role` as warn, `no-redundant-roles` as warn)
+- `strict` config grows from 36 → 40 rules (all new rules set to error)
+- Updated `config-presets.test.ts` rule counts (recommended: 28, strict: 40)
+
+---
+
+### Fixed (from 0.14.0 unreleased)
 - Fixed `./core` CJS export — `require('eslint-plugin-test-a11y-js/core')` now correctly exports `A11yChecker` instead of the ESLint plugin
 - Fixed `bin/eslint-with-progress.js` to work with both ESLint v8 and v9 (removed deprecated `useEslintrc` and `extensions` options)
 - Removed `vitest` from `peerDependencies` (should only be in devDependencies)
 - Replaced `TODO:` placeholder text in `link-text` autofix suggestions with user-friendly text
 
-### Changed
-- Updated `plugin-structure.test.ts` to verify all 36 rules (was stale at 6)
+### Changed (from 0.14.0 unreleased)
+- Updated `plugin-structure.test.ts` to verify all 40 rules
 - Enhanced `build-verification.test.ts` with formatter/formatter-progress file checks and export-to-disk validation
-- Rewrote `rule-structure.test.ts` to dynamically cover all 36 rules (was hardcoded to 6)
-- Rewrote `config-presets.test.ts` to test built plugin with exact rule counts (minimal: 3, recommended: 24, strict: 36)
+- Rewrote `rule-structure.test.ts` to dynamically cover all rule files
+- Rewrote `config-presets.test.ts` to test built plugin with exact rule counts (minimal: 3, recommended: 28, strict: 40)
 - Expanded `test:core` pipeline with config-presets, flat-config, plugin-structure, and all new integration tests
 - Clarified recommended config comment about excluded rules (no longer "temporarily disabled")
 
-### Added
+### Added (from 0.14.0 unreleased)
 - `package-publish-readiness.test.ts` — comprehensive publish gate covering npm pack contents, CJS require, export content validation, rule loading, version consistency, and package.json field checks
 - `formatter-output.test.ts` — functional tests for formatter and formatter-with-progress output
 - `bin-smoke.test.ts` — smoke test for bin/eslint-with-progress.js (shebang, syntax, structure)

@@ -6,6 +6,7 @@ import eslintPlugin from '../../../../dist/linter/eslint-plugin/index.js'
 const ALL_RULE_NAMES = [
   'accessible-emoji',
   'anchor-ambiguous-text',
+  'anchor-is-valid',
   'aria-activedescendant-has-tabindex',
   'aria-validation',
   'audio-captions',
@@ -32,8 +33,11 @@ const ALL_RULE_NAMES = [
   'no-aria-hidden-on-focusable',
   'no-autofocus',
   'no-distracting-elements',
+  'no-interactive-element-to-noninteractive-role',
   'no-noninteractive-element-interactions',
+  'no-noninteractive-element-to-interactive-role',
   'no-noninteractive-tabindex',
+  'no-redundant-roles',
   'no-role-presentation-on-focusable',
   'no-static-element-interactions',
   'semantic-html',
@@ -101,10 +105,10 @@ describe('ESLint Plugin Structure', () => {
     expect(rules).toHaveProperty('test-a11y-js/interactive-supports-focus')
   })
 
-  it('should export all 36 rules', () => {
+  it('should export all 40 rules', () => {
     expect(eslintPlugin.rules).toBeDefined()
     const ruleNames = Object.keys(eslintPlugin.rules)
-    expect(ruleNames).toHaveLength(36)
+    expect(ruleNames).toHaveLength(40)
 
     for (const name of ALL_RULE_NAMES) {
       expect(eslintPlugin.rules).toHaveProperty(name)

@@ -49,7 +49,12 @@ const strict: RuleConfig = {
   'test-a11y-js/anchor-ambiguous-text': 'error',
   'test-a11y-js/img-redundant-alt': 'error',
   'test-a11y-js/accessible-emoji': 'error',
-  'test-a11y-js/html-has-lang': 'error'
+  'test-a11y-js/html-has-lang': 'error',
+  // Phase 6: New rules
+  'test-a11y-js/anchor-is-valid': 'error',
+  'test-a11y-js/no-interactive-element-to-noninteractive-role': 'error',
+  'test-a11y-js/no-noninteractive-element-to-interactive-role': 'error',
+  'test-a11y-js/no-redundant-roles': 'error'
 }
 
 export default strict

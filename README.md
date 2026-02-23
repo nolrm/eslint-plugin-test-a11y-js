@@ -10,7 +10,7 @@
 
 - ✅ **Zero config** - Works out of the box with React, Vue, and JSX
 - ✅ **Real-time feedback** - Catch issues in your editor, not in production
-- ✅ **36 accessibility rules** - Covers images, forms, buttons, landmarks, ARIA, focus, and more
+- ✅ **40 accessibility rules** - Covers images, forms, buttons, landmarks, ARIA, focus, and more
 - ✅ **Editor suggestions** - Get actionable fixes directly in your editor
 - ✅ **Dual API** - Use as ESLint plugin OR programmatic API
 - ✅ **Large project ready** - Minimal preset for incremental adoption
@@ -289,10 +289,10 @@ In VS Code and other editors with ESLint support, suggestions appear as Quick Fi
 
 ## ESLint Rules
 
-The plugin provides **36 accessibility rules**:
+The plugin provides **40 accessibility rules**:
 
 **Core rules:**
-- `test-a11y-js/image-alt` - Enforce images have alt attributes
+- `test-a11y-js/image-alt` - Enforce images, `input[type=image]`, and `area` elements have alt attributes
 - `test-a11y-js/button-label` - Enforce buttons have labels
 - `test-a11y-js/link-text` - Enforce links have descriptive text
 - `test-a11y-js/form-label` - Enforce form controls have labels
@@ -320,6 +320,9 @@ The plugin provides **36 accessibility rules**:
 **Focusable & ARIA rules:**
 - `test-a11y-js/no-aria-hidden-on-focusable` - Disallow aria-hidden on focusable elements
 - `test-a11y-js/no-role-presentation-on-focusable` - Disallow role="presentation" on focusable elements
+- `test-a11y-js/no-interactive-element-to-noninteractive-role` - Disallow role="none/presentation" on interactive elements (button, a, input, etc.)
+- `test-a11y-js/no-noninteractive-element-to-interactive-role` - Disallow interactive roles on non-interactive elements without keyboard support
+- `test-a11y-js/no-redundant-roles` - Disallow explicit roles that match the element's implicit ARIA role
 - `test-a11y-js/aria-activedescendant-has-tabindex` - Enforce aria-activedescendant targets are focusable
 
 **Event & keyboard rules:**
@@ -334,6 +337,7 @@ The plugin provides **36 accessibility rules**:
 - `test-a11y-js/heading-has-content` - Enforce headings have content
 - `test-a11y-js/img-redundant-alt` - Enforce img alt does not contain redundant words
 - `test-a11y-js/anchor-ambiguous-text` - Enforce link text is not generic
+- `test-a11y-js/anchor-is-valid` - Enforce anchors have valid href (not empty, `#`, or `javascript:`)
 - `test-a11y-js/accessible-emoji` - Enforce emoji have accessible labels
 - `test-a11y-js/autocomplete-valid` - Enforce autocomplete attribute is valid
 

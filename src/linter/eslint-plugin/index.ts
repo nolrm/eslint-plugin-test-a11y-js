@@ -64,6 +64,11 @@ import anchorAmbiguousText from './rules/anchor-ambiguous-text'
 import imgRedundantAlt from './rules/img-redundant-alt'
 import accessibleEmoji from './rules/accessible-emoji'
 import htmlHasLang from './rules/html-has-lang'
+// Phase 6: New rules (parity with jsx-a11y + bug fixes)
+import anchorIsValid from './rules/anchor-is-valid'
+import noInteractiveElementToNoninteractiveRole from './rules/no-interactive-element-to-noninteractive-role'
+import noNoninteractiveElementToInteractiveRole from './rules/no-noninteractive-element-to-interactive-role'
+import noRedundantRoles from './rules/no-redundant-roles'
 
 /**
  * ESLint plugin for accessibility checking
@@ -114,7 +119,12 @@ const plugin: ESLint.Plugin = {
     'anchor-ambiguous-text': anchorAmbiguousText,
     'img-redundant-alt': imgRedundantAlt,
     'accessible-emoji': accessibleEmoji,
-    'html-has-lang': htmlHasLang
+    'html-has-lang': htmlHasLang,
+    // Phase 6: New rules (parity with jsx-a11y + bug fixes)
+    'anchor-is-valid': anchorIsValid,
+    'no-interactive-element-to-noninteractive-role': noInteractiveElementToNoninteractiveRole,
+    'no-noninteractive-element-to-interactive-role': noNoninteractiveElementToInteractiveRole,
+    'no-redundant-roles': noRedundantRoles
   },
   configs: {
     minimal: {

@@ -17,8 +17,8 @@ describe('ESLint Rule Structure', () => {
     .filter(f => f.endsWith('.ts') && !f.startsWith('index'))
     .sort()
 
-  it('should have exactly 36 rule files', () => {
-    expect(ruleFiles.length).toBe(36)
+  it('should have exactly 40 rule files', () => {
+    expect(ruleFiles.length).toBe(40)
   })
 
   it('should have all rule files readable', () => {
