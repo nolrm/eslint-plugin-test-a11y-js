@@ -52,10 +52,10 @@ describe('ESLint Config Presets', () => {
   })
 
   describe('Recommended Config', () => {
-    it('should have exactly 28 rules', () => {
+    it('should have exactly 30 rules', () => {
       const rules = plugin.configs.recommended.rules
       const ruleCount = Object.keys(rules).length
-      expect(ruleCount).toBe(28)
+      expect(ruleCount).toBe(30)
     })
 
     it('should have critical rules as error', () => {
@@ -77,10 +77,10 @@ describe('ESLint Config Presets', () => {
   })
 
   describe('Strict Config', () => {
-    it('should have exactly 40 rules', () => {
+    it('should have exactly 43 rules', () => {
       const rules = plugin.configs.strict.rules
       const ruleCount = Object.keys(rules).length
-      expect(ruleCount).toBe(40)
+      expect(ruleCount).toBe(43)
     })
 
     it('should have all rules set to error', () => {

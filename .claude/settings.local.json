@@ -21,7 +21,8 @@
       "Bash(do basename \"$test\" -rule.test.ts)",
       "Bash(node:*)",
       "Bash(npm install:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(tail:*)"
     ]
   }
 }

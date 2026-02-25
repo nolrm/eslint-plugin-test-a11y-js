@@ -69,6 +69,9 @@ import anchorIsValid from './rules/anchor-is-valid'
 import noInteractiveElementToNoninteractiveRole from './rules/no-interactive-element-to-noninteractive-role'
 import noNoninteractiveElementToInteractiveRole from './rules/no-noninteractive-element-to-interactive-role'
 import noRedundantRoles from './rules/no-redundant-roles'
+import preferTagOverRole from './rules/prefer-tag-over-role'
+import controlHasAssociatedLabel from './rules/control-has-associated-label'
+import scope from './rules/scope'
 
 /**
  * ESLint plugin for accessibility checking
@@ -124,7 +127,10 @@ const plugin: ESLint.Plugin = {
     'anchor-is-valid': anchorIsValid,
     'no-interactive-element-to-noninteractive-role': noInteractiveElementToNoninteractiveRole,
     'no-noninteractive-element-to-interactive-role': noNoninteractiveElementToInteractiveRole,
-    'no-redundant-roles': noRedundantRoles
+    'no-redundant-roles': noRedundantRoles,
+    'prefer-tag-over-role': preferTagOverRole,
+    'control-has-associated-label': controlHasAssociatedLabel,
+    'scope': scope
   },
   configs: {
     minimal: {

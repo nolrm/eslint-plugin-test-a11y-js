@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-02-23
+
+### Added
+- 3 new accessibility rules (total: 43 rules)
+  - `prefer-tag-over-role` — recommends using semantic native HTML elements instead of ARIA roles on generic elements (e.g. `<div role="button">` → use `<button>`); strict-only, not in recommended
+  - `control-has-associated-label` — enforces that elements with interactive ARIA roles (not already covered by `button-label`/`form-label`) have an accessible label via `aria-label`, `aria-labelledby`, `title`, or text content
+  - `scope` — validates the `scope` attribute: only valid on `<th>`, and the value must be one of `col`, `row`, `colgroup`, `rowgroup`
+
+### Changed
+- Added component mapping support (`getElementRoleFromJSX`) to `no-interactive-element-to-noninteractive-role`, `no-noninteractive-element-to-interactive-role`, and `no-redundant-roles` so design-system components are correctly resolved
+- `recommended` config grows from 28 → 30 rules (new: `control-has-associated-label` as error, `scope` as error)
+- `strict` config grows from 40 → 43 rules (all 3 new rules as error)
+
+---
+
 ## [0.15.0] - 2026-02-23
 
 ### Added

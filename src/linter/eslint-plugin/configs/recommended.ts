@@ -44,7 +44,9 @@ const recommended: RuleConfig = {
   'test-a11y-js/anchor-is-valid': 'error',
   'test-a11y-js/no-interactive-element-to-noninteractive-role': 'error',
   'test-a11y-js/no-noninteractive-element-to-interactive-role': 'warn',
-  'test-a11y-js/no-redundant-roles': 'warn'
+  'test-a11y-js/no-redundant-roles': 'warn',
+  'test-a11y-js/control-has-associated-label': 'error',
+  'test-a11y-js/scope': 'error'
 
   // Not included in recommended (available in strict):
   // - aria-validation, semantic-html, form-validation

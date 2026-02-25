@@ -130,13 +130,13 @@ describe('Package Publish Readiness', () => {
     })
   })
 
-  describe('All 40 rules loadable', () => {
+  describe('All 43 rules loadable', () => {
     it('every rule in the built plugin should have meta and create', () => {
       const require = createRequire(import.meta.url)
       const plugin = require(join(root, 'dist/linter/eslint-plugin/index.js'))
       const ruleNames = Object.keys(plugin.rules)
 
-      expect(ruleNames.length).toBe(40)
+      expect(ruleNames.length).toBe(43)
 
       for (const name of ruleNames) {
         const rule = plugin.rules[name]

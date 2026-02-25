@@ -9,6 +9,7 @@
 import type { Rule } from 'eslint'
 import { getJSXAttribute, hasJSXAttribute } from '../utils/jsx-ast-utils'
 import { getVueAttribute, hasVueAttribute } from '../utils/vue-ast-utils'
+import { getElementRoleFromJSX } from '../utils/component-mapping'
 
 /**
  * Get the implicit ARIA role for a given element tag and attributes.
@@ -118,11 +119,10 @@ const rule: Rule.RuleModule = {
       JSXOpeningElement(node: Rule.Node) {
         const jsxNode = node as any
 
-        if (!jsxNode.name || jsxNode.name.type !== 'JSXIdentifier') {
-          return
-        }
+        // Resolve tag via component mapping (handles Nav→nav, Button→button, etc.)
+        const tagName = getElementRoleFromJSX(node, context)
+        if (!tagName) return
 
-        const tagName = jsxNode.name.name?.toLowerCase()
         const roleAttr = getJSXAttribute(jsxNode, 'role')
         if (!roleAttr) return
 

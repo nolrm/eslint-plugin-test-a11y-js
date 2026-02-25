@@ -5,7 +5,7 @@ import { join } from 'path'
 /**
  * Tests for ESLint rule structure
  *
- * These tests verify that all 36 rules are properly structured and exported
+ * These tests verify that all 43 rules are properly structured and exported
  * without requiring the full plugin bundle (which has jsdom bundling issues)
  */
 
@@ -17,8 +17,8 @@ describe('ESLint Rule Structure', () => {
     .filter(f => f.endsWith('.ts') && !f.startsWith('index'))
     .sort()
 
-  it('should have exactly 40 rule files', () => {
-    expect(ruleFiles.length).toBe(40)
+  it('should have exactly 43 rule files', () => {
+    expect(ruleFiles.length).toBe(43)
   })
 
   it('should have all rule files readable', () => {

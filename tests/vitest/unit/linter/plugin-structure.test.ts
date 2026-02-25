@@ -13,6 +13,7 @@ const ALL_RULE_NAMES = [
   'autocomplete-valid',
   'button-label',
   'click-events-have-key-events',
+  'control-has-associated-label',
   'details-summary',
   'dialog-modal',
   'fieldset-legend',
@@ -40,6 +41,8 @@ const ALL_RULE_NAMES = [
   'no-redundant-roles',
   'no-role-presentation-on-focusable',
   'no-static-element-interactions',
+  'prefer-tag-over-role',
+  'scope',
   'semantic-html',
   'tabindex-no-positive',
   'table-structure',
@@ -105,10 +108,10 @@ describe('ESLint Plugin Structure', () => {
     expect(rules).toHaveProperty('test-a11y-js/interactive-supports-focus')
   })
 
-  it('should export all 40 rules', () => {
+  it('should export all 43 rules', () => {
     expect(eslintPlugin.rules).toBeDefined()
     const ruleNames = Object.keys(eslintPlugin.rules)
-    expect(ruleNames).toHaveLength(40)
+    expect(ruleNames).toHaveLength(43)
 
     for (const name of ALL_RULE_NAMES) {
       expect(eslintPlugin.rules).toHaveProperty(name)

@@ -10,7 +10,7 @@
 
 - ✅ **Zero config** - Works out of the box with React, Vue, and JSX
 - ✅ **Real-time feedback** - Catch issues in your editor, not in production
-- ✅ **40 accessibility rules** - Covers images, forms, buttons, landmarks, ARIA, focus, and more
+- ✅ **43 accessibility rules** - Covers images, forms, buttons, landmarks, ARIA, focus, and more
 - ✅ **Editor suggestions** - Get actionable fixes directly in your editor
 - ✅ **Dual API** - Use as ESLint plugin OR programmatic API
 - ✅ **Large project ready** - Minimal preset for incremental adoption
@@ -289,7 +289,7 @@ In VS Code and other editors with ESLint support, suggestions appear as Quick Fi
 
 ## ESLint Rules
 
-The plugin provides **40 accessibility rules**:
+The plugin provides **43 accessibility rules**:
 
 **Core rules:**
 - `test-a11y-js/image-alt` - Enforce images, `input[type=image]`, and `area` elements have alt attributes
@@ -323,6 +323,9 @@ The plugin provides **40 accessibility rules**:
 - `test-a11y-js/no-interactive-element-to-noninteractive-role` - Disallow role="none/presentation" on interactive elements (button, a, input, etc.)
 - `test-a11y-js/no-noninteractive-element-to-interactive-role` - Disallow interactive roles on non-interactive elements without keyboard support
 - `test-a11y-js/no-redundant-roles` - Disallow explicit roles that match the element's implicit ARIA role
+- `test-a11y-js/prefer-tag-over-role` - Prefer semantic native HTML elements over ARIA role attributes on generic elements
+- `test-a11y-js/control-has-associated-label` - Enforce ARIA-role interactive controls have an accessible label
+- `test-a11y-js/scope` - Enforce valid use of the scope attribute on `<th>` elements
 - `test-a11y-js/aria-activedescendant-has-tabindex` - Enforce aria-activedescendant targets are focusable
 
 **Event & keyboard rules:**

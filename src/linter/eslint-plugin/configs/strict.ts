@@ -54,7 +54,10 @@ const strict: RuleConfig = {
   'test-a11y-js/anchor-is-valid': 'error',
   'test-a11y-js/no-interactive-element-to-noninteractive-role': 'error',
   'test-a11y-js/no-noninteractive-element-to-interactive-role': 'error',
-  'test-a11y-js/no-redundant-roles': 'error'
+  'test-a11y-js/no-redundant-roles': 'error',
+  'test-a11y-js/prefer-tag-over-role': 'error',
+  'test-a11y-js/control-has-associated-label': 'error',
+  'test-a11y-js/scope': 'error'
 }
 
 export default strict

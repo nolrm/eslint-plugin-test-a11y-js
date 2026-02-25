@@ -9,6 +9,7 @@
 import type { Rule } from 'eslint'
 import { getJSXAttribute, hasJSXAttribute } from '../utils/jsx-ast-utils'
 import { getVueAttribute, hasVueAttribute } from '../utils/vue-ast-utils'
+import { getElementRoleFromJSX } from '../utils/component-mapping'
 
 // Non-interactive elements that should not receive interactive roles without
 // keyboard support (tabindex + keyboard event handlers)
@@ -66,12 +67,9 @@ const rule: Rule.RuleModule = {
       JSXOpeningElement(node: Rule.Node) {
         const jsxNode = node as any
 
-        if (!jsxNode.name || jsxNode.name.type !== 'JSXIdentifier') {
-          return
-        }
-
-        const tagName = jsxNode.name.name?.toLowerCase()
-        if (!NON_INTERACTIVE_ELEMENTS.has(tagName)) return
+        // Resolve tag via component mapping (handles Div→div, etc.)
+        const tagName = getElementRoleFromJSX(node, context)
+        if (!tagName || !NON_INTERACTIVE_ELEMENTS.has(tagName)) return
 
         const roleAttr = getJSXAttribute(jsxNode, 'role')
         if (!roleAttr) return
