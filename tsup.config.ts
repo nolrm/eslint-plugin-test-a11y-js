@@ -20,7 +20,8 @@ export default defineConfig({
   esbuildOptions(options) {
     // Suppress the require.resolve warning for jsdom's xhr-sync-worker.js
     options.logOverride = {
-      'require-resolve-not-external': 'silent'
+      'require-resolve-not-external': 'silent',
+      'commonjs-variable-in-esm': 'silent'
     }
     // Inject version from package.json at build time
     options.define = {

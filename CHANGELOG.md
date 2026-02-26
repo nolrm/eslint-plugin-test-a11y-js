@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.1] - 2026-02-26
+
+### Fixed
+- Build: suppress tsup/esbuild `commonjs-variable-in-esm` warning so CI build completes without warnings
+
+---
+
 ## [0.16.0] - 2026-02-23
 
 ### Added
