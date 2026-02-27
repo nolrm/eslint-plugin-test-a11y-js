@@ -25,6 +25,7 @@ build/
 .idea/
 *.iml
 *.iws
+.claude/
 
 # Logs
 logs
