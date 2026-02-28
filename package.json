@@ -48,7 +48,7 @@
     "test:e2e": "vitest run tests/vitest/integration/eslint-cli-e2e.test.ts",
     "pre-check": "npm run build && npm run test:core && npm run test:e2e && npm run lint && npm run type-check",
     "verify": "npm run pre-check",
-    "prepare": "npm run build",
+    "prepare": "npm run build && git config core.hooksPath .contextkit/hooks",
     "prepublish": "npm run pre-check",
     "prepublishOnly": "npm run pre-check"
   },

@@ -581,7 +581,7 @@ For rule-by-rule mapping from `eslint-plugin-jsx-a11y` to `eslint-plugin-test-a1
 
 ## Contributing
 
-Contributions are welcome! Please see the [contributing guidelines](CONTRIBUTING.md) for more information.
+Contributions are welcome! After cloning, `npm install` runs the `prepare` script (build + ContextKit git hooks; hooks live in `.contextkit/hooks/`). Please see the [contributing guidelines](CONTRIBUTING.md) for more information.
 
 ## Author
 

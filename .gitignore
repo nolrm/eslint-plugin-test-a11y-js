@@ -26,6 +26,8 @@ build/
 *.iml
 *.iws
 .claude/
+.contextkit/
+.cursor/
 
 # Logs
 logs
