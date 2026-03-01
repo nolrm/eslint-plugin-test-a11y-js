@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Internal: ContextKit integration; `prepare` script sets `core.hooksPath` to `.contextkit/hooks`; `.gitignore` updated for `.contextkit/` and `.cursor/`.
 
+### Fixed
+- CI: integration tests (config-presets, formatter-output) resolve dist path from test file location for reliable runs in GitHub Actions.
+
 ## [0.16.1] - 2026-02-26
 
 ### Fixed

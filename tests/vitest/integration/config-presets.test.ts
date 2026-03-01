@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { join } from 'path'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
 
 /**
@@ -9,9 +10,11 @@ import { createRequire } from 'module'
  */
 
 const require = createRequire(import.meta.url)
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const projectRoot = resolve(__dirname, '..', '..', '..')
 
 describe('ESLint Config Presets', () => {
-  const pluginPath = join(process.cwd(), 'dist/linter/eslint-plugin/index.js')
+  const pluginPath = resolve(projectRoot, 'dist/linter/eslint-plugin/index.js')
   const plugin = require(pluginPath).default
 
   describe('Config Exports', () => {

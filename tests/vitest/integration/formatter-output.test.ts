@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { join, dirname } from 'path'
+import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
 
@@ -11,7 +11,7 @@ import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const projectRoot = join(__dirname, '..', '..', '..')
+const projectRoot = resolve(__dirname, '..', '..', '..')
 
 function createMockResult(overrides: Record<string, unknown> = {}) {
   return {
@@ -54,7 +54,7 @@ function createCleanResult() {
 }
 
 describe('Formatter Output', () => {
-  const formatterPath = join(projectRoot, 'dist/linter/eslint-plugin/formatter.js')
+  const formatterPath = resolve(projectRoot, 'dist/linter/eslint-plugin/formatter.js')
   const formatterModule = require(formatterPath)
 
   describe('default formatter', () => {
@@ -105,7 +105,7 @@ describe('Formatter Output', () => {
 })
 
 describe('Formatter With Progress Output', () => {
-  const formatterPath = join(projectRoot, 'dist/linter/eslint-plugin/formatter-with-progress.js')
+  const formatterPath = resolve(projectRoot, 'dist/linter/eslint-plugin/formatter-with-progress.js')
   const formatterModule = require(formatterPath)
 
   describe('progress formatter', () => {
