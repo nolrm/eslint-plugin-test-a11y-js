@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Internal: ContextKit integration; `prepare` script sets `core.hooksPath` to `.contextkit/hooks`; `.gitignore` updated for `.contextkit/` and `.cursor/`.
+- Performance: `component-mapping` — `NATIVE_TAGS` is now a module-level `Set` (was recreated as an array on every `getElementRoleFromJSX` call); `includes()` replaced with `Set.has()` for O(1) lookups.
+- Performance: `event-utils` — JSX handler checks now do a single pass over `node.attributes` against a module-level `Set` instead of N passes (one per handler name); `hasJSXEventHandler` uses a unified `JSX_ALL_HANDLERS_SET`. Vue handler checks use precomputed event-name `Set`s, eliminating per-call regex in the inner loop.
+- Performance: `runtime-comment` — `getAllComments()` is now cached per file via `WeakMap` (was called once per node); cached comments are sorted by position so the proximity scan exits early once past the node.
 
 ### Fixed
 - CI: integration tests (config-presets, formatter-output) resolve dist path from test file location for reliable runs in GitHub Actions.

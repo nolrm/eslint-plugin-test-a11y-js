@@ -8,6 +8,22 @@
 import type { Rule } from 'eslint'
 import type { A11yPluginSettings } from './component-mapping'
 
+// Per-file cache for getAllComments() — avoids an O(n) full-file scan per node.
+// Keyed by the sourceCode object (one instance per file); WeakMap allows GC when done.
+const sortedCommentsCache = new WeakMap<object, any[]>()
+
+function getCachedSortedComments(sourceCode: ReturnType<Rule.RuleContext['getSourceCode']>): any[] {
+  const key = sourceCode as unknown as object
+  let comments = sortedCommentsCache.get(key)
+  if (!comments) {
+    comments = sourceCode.getAllComments().slice().sort(
+      (a: any, b: any) => (a.range?.[0] ?? 0) - (b.range?.[0] ?? 0)
+    )
+    sortedCommentsCache.set(key, comments)
+  }
+  return comments
+}
+
 /**
  * Check if a node (or its nearest parent) has a runtime-checked comment
  * 
@@ -118,22 +134,19 @@ export function hasRuntimeCheckedComment(
     }
   }
   
-  // Also check all comments in the source code near the node's range
-  // This is a fallback for JSX comments that might not be properly associated
-  const allComments = sourceCode.getAllComments()
-  const nodeRange = node.range || (node as any).loc
-  if (nodeRange) {
-    const [nodeStart] = Array.isArray(nodeRange) ? nodeRange : [nodeRange.start]
+  // Fallback: scan comments near the node's range.
+  // Handles JSX comments not properly associated via getCommentsBefore/After.
+  // Uses a per-file sorted cache so getAllComments() is called once per file,
+  // and breaks early once past the node position.
+  const nodeStart = node.range?.[0]
+  if (nodeStart !== undefined) {
+    const allComments = getCachedSortedComments(sourceCode)
     for (const comment of allComments) {
-      const commentRange = comment.range || (comment as any).loc
-      if (commentRange) {
-        const [commentStart] = Array.isArray(commentRange) ? commentRange : [commentRange.start]
-        // Check if comment is within 50 characters before the node
-        if (commentStart < nodeStart && nodeStart - commentStart < 50) {
-          if (comment.value.includes(commentMarker)) {
-            return { hasComment: true, mode }
-          }
-        }
+      const commentStart = comment.range?.[0]
+      if (commentStart === undefined) continue
+      if (commentStart >= nodeStart) break  // sorted: no earlier candidates remain
+      if (nodeStart - commentStart < 50 && comment.value.includes(commentMarker)) {
+        return { hasComment: true, mode }
       }
     }
   }

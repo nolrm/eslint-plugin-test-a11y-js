@@ -6,6 +6,14 @@
 
 import type { Rule } from 'eslint'
 
+const NATIVE_TAGS = new Set([
+  'a', 'button', 'img', 'input', 'select', 'textarea',
+  'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'iframe', 'fieldset', 'table', 'details', 'summary',
+  'video', 'audio', 'nav', 'main', 'header', 'footer',
+  'aside', 'section', 'article', 'dialog', 'label'
+])
+
 /**
  * Plugin settings interface
  */
@@ -44,42 +52,34 @@ export function getElementRoleFromJSX(
   
   const componentName = jsxNode.name.name
   const tagName = componentName.toLowerCase()
-  
+
   // 1. Check if it's a native HTML tag
-  const nativeTags = [
-    'a', 'button', 'img', 'input', 'select', 'textarea',
-    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'iframe', 'fieldset', 'table', 'details', 'summary',
-    'video', 'audio', 'nav', 'main', 'header', 'footer',
-    'aside', 'section', 'article', 'dialog', 'label'
-  ]
-  
-  if (nativeTags.includes(tagName)) {
+  if (NATIVE_TAGS.has(tagName)) {
     return tagName
   }
-  
+
   // 2. Check polymorphic props (as, component) - only if static literal
   const settings = (context.settings || {}) as A11yPluginSettings
   const polymorphicPropNames = settings['test-a11y-js']?.polymorphicPropNames || ['as', 'component']
-  
+
   for (const propName of polymorphicPropNames) {
-    const propAttr = jsxNode.attributes?.find((attr: any) => 
+    const propAttr = jsxNode.attributes?.find((attr: any) =>
       attr.name?.name === propName
     )
-    
+
     if (propAttr?.value?.type === 'Literal' && typeof propAttr.value.value === 'string') {
       const polymorphicValue = propAttr.value.value.toLowerCase()
-      if (nativeTags.includes(polymorphicValue)) {
+      if (NATIVE_TAGS.has(polymorphicValue)) {
         return polymorphicValue
       }
     }
   }
-  
+
   // 3. Check component mapping from settings
   const componentMapping = settings['test-a11y-js']?.components || {}
   if (componentMapping[componentName]) {
     const mappedTag = componentMapping[componentName].toLowerCase()
-    if (nativeTags.includes(mappedTag)) {
+    if (NATIVE_TAGS.has(mappedTag)) {
       return mappedTag
     }
   }
