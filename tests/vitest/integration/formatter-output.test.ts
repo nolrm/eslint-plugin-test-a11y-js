@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { existsSync } from 'fs'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
@@ -10,8 +11,20 @@ import { createRequire } from 'module'
  */
 
 const require = createRequire(import.meta.url)
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const projectRoot = resolve(__dirname, '..', '..', '..')
+
+function getProjectRoot(): string {
+  const fromCwd = process.cwd()
+  const distFromCwd = resolve(fromCwd, 'dist/linter/eslint-plugin/formatter.js')
+  if (existsSync(distFromCwd)) return fromCwd
+  const fromFile = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
+  const distFromFile = resolve(fromFile, 'dist/linter/eslint-plugin/formatter.js')
+  if (existsSync(distFromFile)) return fromFile
+  throw new Error(
+    `dist/formatter.js not found. Tried cwd=${fromCwd} and fileRoot=${fromFile}. Ensure npm run build ran first.`
+  )
+}
+
+const projectRoot = getProjectRoot()
 
 function createMockResult(overrides: Record<string, unknown> = {}) {
   return {

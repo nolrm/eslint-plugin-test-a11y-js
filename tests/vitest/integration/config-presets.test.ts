@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { existsSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
@@ -10,8 +11,20 @@ import { createRequire } from 'module'
  */
 
 const require = createRequire(import.meta.url)
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const projectRoot = resolve(__dirname, '..', '..', '..')
+
+function getProjectRoot(): string {
+  const fromCwd = process.cwd()
+  const pluginFromCwd = resolve(fromCwd, 'dist/linter/eslint-plugin/index.js')
+  if (existsSync(pluginFromCwd)) return fromCwd
+  const fromFile = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
+  const pluginFromFile = resolve(fromFile, 'dist/linter/eslint-plugin/index.js')
+  if (existsSync(pluginFromFile)) return fromFile
+  throw new Error(
+    `dist/linter/eslint-plugin/index.js not found. Tried cwd=${fromCwd} and fileRoot=${fromFile}. Ensure npm run build ran first.`
+  )
+}
+
+const projectRoot = getProjectRoot()
 
 describe('ESLint Config Presets', () => {
   const pluginPath = resolve(projectRoot, 'dist/linter/eslint-plugin/index.js')
