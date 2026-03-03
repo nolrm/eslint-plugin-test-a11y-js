@@ -16,6 +16,7 @@ npm run test:coverage   # Generate coverage report
 npm run lint            # ESLint validation (src/**/*.ts)
 npm run type-check      # TypeScript type checking
 npm run pre-check       # Full validation: build + test:core + test:e2e + lint + type-check
+npm run test:smoke      # Local smoke test (same as CI): pack plugin, run ESLint in e2e fixtures, verify violations
 ```
 
 **Running a single test file:**

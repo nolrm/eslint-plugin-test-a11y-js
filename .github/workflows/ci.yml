@@ -77,8 +77,9 @@ jobs:
         working-directory: tests/e2e/fixtures/${{ matrix.fixture }}
         run: |
           # ESLint exits non-zero when it finds violations - we expect violations
+          # Include TypeScript/TSX/JS/JSX files explicitly so fixtures are linted
           set +e
-          npx eslint src/ --format json --no-error-on-unmatched-pattern > eslint-output.json 2>&1
+          npx eslint src/ --ext .ts,.tsx,.js,.jsx --format json --no-error-on-unmatched-pattern > eslint-output.json 2>&1
           EXIT_CODE=$?
           set -e
 

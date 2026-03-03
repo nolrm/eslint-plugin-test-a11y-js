@@ -4,7 +4,8 @@
   "private": true,
   "description": "Smoke test: ESLint 8 + legacy .eslintrc config",
   "dependencies": {
+    "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.56.0",
-    "@typescript-eslint/parser": "^5.62.0"
+    "eslint-plugin-test-a11y-js": "file:../../../../eslint-plugin-test-a11y-js-0.17.0.tgz"
   }
 }
