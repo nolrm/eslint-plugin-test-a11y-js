@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-04-13
+
+### Fixed
+
+- Removed stale deprecation banner from README (was copied from the old `eslint-plugin-test-a11y-js` package)
+
 ## [1.0.0] - 2026-04-13
 
 ### Breaking Changes

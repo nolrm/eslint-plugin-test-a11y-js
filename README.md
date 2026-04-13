@@ -1,9 +1,5 @@
 # eslint-plugin-a11y
 
-> **DEPRECATED:** This package has been renamed to [`eslint-plugin-a11y`](https://www.npmjs.com/package/eslint-plugin-a11y).
-> Run: `npm install --save-dev eslint-plugin-a11y`
-> See the [migration guide](./docs/MIGRATION_TO_A11Y.md) for details.
-
 > **Catch accessibility issues in your editor, not in production.** Zero-config ESLint plugin + programmatic API for React, Vue, and JSX.
 
 [![npm version](https://img.shields.io/npm/v/eslint-plugin-a11y.svg)](https://www.npmjs.com/package/eslint-plugin-a11y)
